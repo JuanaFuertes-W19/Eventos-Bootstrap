@@ -1,3 +1,38 @@
+/* Hero overlay section */
+.hero-overlay-section {
+  position: relative;
+  min-height: 60vh;
+  padding: 0;
+}
+
+.hero-overlay-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 60vh;
+}
+
+.hero-overlay-wrapper .carousel-inner {
+  min-height: 60vh;
+  max-height: 80vh;
+}
+
+.hero-overlay-content {
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 1rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  max-width: 600px;
+}
+
+.hero-title {
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.hero-lead {
+  color: #f8f9fa;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
 /* Agrega esto en tu archivo CSS o dentro de <style> en el <head> */
 #heroCarousel .carousel-inner {
   max-height: 80vh;
