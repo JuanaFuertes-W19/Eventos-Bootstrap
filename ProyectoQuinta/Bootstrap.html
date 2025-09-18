@@ -127,18 +127,22 @@
     </div>
   </div>
 </section>
+
+<!-- ...existing code... -->
 <section id="calendario" class="container my-5">
   <h2 class="mb-4 text-center">Calendario de Disponibilidad</h2>
   <div class="row justify-content-center">
     <div class="col-12 col-md-8">
       <div class="alert alert-info text-center mb-4">
-        Consultá las fechas disponibles para reservar la quinta. ¡Actualizamos el calendario regularmente!
+        Consultá las fechas disponibles para reservar la quinta.<br>
+        Los días en <span style="color:#198754;font-weight:bold;">verde</span> están disponibles, los <span style="color:#6c757d;font-weight:bold;">grises</span> ya están reservados.
       </div>
-      <!-- Calendario embebido de Google Calendar (puedes reemplazar el src por el tuyo) -->
-      <div class="ratio ratio-16x9 shadow rounded">
-        <iframe src="https://calendar.google.com/calendar/embed?src=tu_email%40gmail.com&ctz=America%2FArgentina%2FBuenos_Aires"
-          style="border:0" frameborder="0" scrolling="no"></iframe>
+      <div class="d-flex justify-content-center align-items-center mb-2 gap-2">
+        <button id="prev-month" class="btn btn-outline-secondary btn-sm" aria-label="Mes anterior">&lt;</button>
+        <h5 id="calendar-title" class="mb-0 text-center" style="min-width:140px;">Noviembre 2025</h5>
+        <button id="next-month" class="btn btn-outline-secondary btn-sm" aria-label="Mes siguiente">&gt;</button>
       </div>
+      <div id="calendar-container"></div>
       <div class="text-center mt-3">
         <a class="btn btn-success" href="https://wa.me/5491176437211?text=Hola,%20quiero%20consultar%20por%20fechas%20para%20la%20quinta" target="_blank" rel="noopener">
           Consultar Disponibilidad
@@ -147,6 +151,73 @@
     </div>
   </div>
 </section>
+<script>
+  // Configuración de meses
+  const months = [
+    { name: "Octubre 2025", year: 2025, month: 10, reserved: [] },
+    { name: "Noviembre 2025", year: 2025, month: 11, reserved: [1, 2, 8, 15, 22, 29] },
+    { name: "Diciembre 2025", year: 2025, month: 12, reserved: [] }
+  ];
+  let currentMonthIndex = 1; // Empieza en Noviembre
+
+  function renderCalendar(monthObj) {
+    const { year, month, reserved } = monthObj;
+    const firstDay = new Date(year, month - 1, 1).getDay(); // 0=domingo
+    const daysInMonth = new Date(year, month, 0).getDate();
+    let html = '<div class="d-flex flex-wrap justify-content-center" style="max-width:308px;margin:auto;">';
+    // Días de la semana
+    const weekDays = ['D','L','M','M','J','V','S'];
+    weekDays.forEach(d => {
+      html += `<div style="width:40px;height:32px;margin:2px;text-align:center;font-weight:bold;color:#333;">${d}</div>`;
+    });
+    // Espacios vacíos antes del primer día
+    for(let i=0; i<firstDay; i++) {
+      html += `<div style="width:40px;height:40px;margin:2px;"></div>`;
+    }
+    // Días del mes
+    for(let day=1; day<=daysInMonth; day++) {
+      let bg = "#f8f9fa";
+      if (reserved.length > 0) {
+        bg = reserved.includes(day) ? "#adb5bd" : "#198754";
+      }
+      html += `
+        <div style="
+          width:40px;height:40px;margin:2px;
+          display:flex;align-items:center;justify-content:center;
+          border-radius:8px;
+          font-weight:bold;
+          font-size:1.1rem;
+          background:${bg};
+          color:${bg === "#f8f9fa" ? "#333" : "white"};
+          box-shadow:0 1px 3px rgba(0,0,0,0.08);
+          cursor:default;
+          transition:background 0.2s;
+        ">${day}</div>
+      `;
+    }
+    html += '</div>';
+    document.getElementById('calendar-container').innerHTML = html;
+    document.getElementById('calendar-title').textContent = monthObj.name;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderCalendar(months[currentMonthIndex]);
+    document.getElementById('prev-month').onclick = function() {
+      if (currentMonthIndex > 0) {
+        currentMonthIndex--;
+        renderCalendar(months[currentMonthIndex]);
+      }
+    };
+    document.getElementById('next-month').onclick = function() {
+      if (currentMonthIndex < months.length - 1) {
+        currentMonthIndex++;
+        renderCalendar(months[currentMonthIndex]);
+      }
+    };
+  });
+</script>
+<!-- ...existing code... -->
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
